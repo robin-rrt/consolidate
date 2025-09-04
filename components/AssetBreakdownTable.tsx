@@ -34,7 +34,7 @@ export default function AssetBreakdownTable() {
                 </td>
               </tr>
             ) : (
-              getChainsWithBalance().map((item: any, index: number) => (
+              getChainsWithBalance().map((item: { chain: { logo: string; name: string }; balance: string; balanceInFiat: number }, index: number) => (
                 <tr key={index} className="border-b border-[#2E2E2E]/10 hover:bg-[#BEF3B8]/30">
                   <td className="py-3 px-2 text-sm text-[#2E2E2E]" style={{ padding: '1% 2%' }}>
                     <div className="flex items-center gap-2">

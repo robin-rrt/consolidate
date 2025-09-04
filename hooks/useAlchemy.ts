@@ -1,9 +1,16 @@
 import { useAccount } from "wagmi";
 import { useState, useEffect } from "react";
+import { AssetTransfersResponse } from 'alchemy-sdk';
+
+// Type for individual transfer objects from Alchemy API
+export type Transfer = AssetTransfersResponse['transfers'][number] & {
+  timestamp?: number;
+  network?: string;
+};
 
 export interface TransferData {
   network: string;
-  transfers: any[];
+  transfers: Transfer[];
   error?: string;
   pageKey?: string;
   hasMore: boolean;
@@ -61,7 +68,7 @@ export function useAlchemyTransfers() {
       
       if (isLoadMore) {
         setTransfers(prev => prev.map(existing => {
-          const newData = results.find((r: any) => r.network === existing.network);
+          const newData = results.find((r: TransferData) => r.network === existing.network);
           if (newData) {
             return {
               ...existing,

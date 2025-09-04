@@ -1,8 +1,8 @@
 'use client';
 
-import { useAlchemyTransfers } from '@/hooks/useAlchemy';
+import { useAlchemyTransfers, Transfer } from '@/hooks/useAlchemy';
 import { useAccount } from 'wagmi';
-import { ArrowUpRight, ArrowDownLeft, ExternalLink, RefreshCw } from 'lucide-react';
+import { ArrowDownLeft, ExternalLink, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function TransactionsTable() {
@@ -29,8 +29,8 @@ export default function TransactionsTable() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const formatAmount = (value: number, asset: string) => {
-    return `${value} ${asset}`;
+  const formatAmount = (value: number | null, asset: string | null) => {
+    return `${value || 0} ${asset || 'Unknown'}`;
   };
 
   const getExplorerUrl = (hash: string, network: string) => {
@@ -50,7 +50,7 @@ export default function TransactionsTable() {
     }
   };
 
-  const formatTimestamp = (transfer: any) => {
+  const formatTimestamp = (transfer: Transfer) => {
     // Use the actual timestamp from the API
     const timestamp = transfer.timestamp || Date.now();
     const now = Date.now();
@@ -139,7 +139,7 @@ export default function TransactionsTable() {
                       </div>
                     </td>
                     <td className="py-3 px-3 text-sm text-[#2E2E2E] font-medium">
-                      <span className="truncate block" title={tx.asset}>{tx.asset}</span>
+                      <span className="truncate block" title={tx.asset || undefined}>{tx.asset}</span>
                     </td>
                     <td className="py-3 px-3 text-sm text-[#2E2E2E] font-medium">
                       <span className="truncate block" title={formatAmount(tx.value, tx.asset)}>
@@ -147,12 +147,12 @@ export default function TransactionsTable() {
                       </span>
                     </td>
                     <td className="py-3 px-3 text-sm text-[#2E2E2E] font-mono">
-                      <span className="truncate block" title={tx.from}>
+                      <span className="truncate block" title={tx.from || undefined}>
                         {formatAddress(tx.from)}
                       </span>
                     </td>
                     <td className="py-3 px-3 text-sm text-[#2E2E2E]">
-                      <span className="truncate block" title={tx.network}>{tx.network}</span>
+                      <span className="truncate block" title={tx.network || undefined}>{tx.network || 'Unknown'}</span>
                     </td>
                     <td className="py-3 px-3 text-sm text-[#2E2E2E]">
                       <span className="truncate block" title={formatTimestamp(tx)}>
@@ -161,11 +161,11 @@ export default function TransactionsTable() {
                     </td>
                     <td className="py-3 px-3 text-sm">
                       <a
-                        href={getExplorerUrl(tx.hash, tx.network)}
+                        href={getExplorerUrl(tx.hash, tx.network || 'Ethereum')}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition-colors"
-                        title={`View transaction on ${tx.network}: ${tx.hash}`}
+                        title={`View transaction on ${tx.network || 'Unknown'}: ${tx.hash}`}
                       >
                         <span className="font-mono text-xs truncate">
                           {tx.hash.slice(0, 6)}...{tx.hash.slice(-4)}

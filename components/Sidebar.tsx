@@ -23,11 +23,6 @@ export default function Sidebar() {
           <span className="font-medium">Deposits</span>
         </Link>
         
-        <div className="flex items-center gap-3 px-3 py-2 rounded-md border border-blue-500 bg-[#BEF3B8] text-[#2E2E2E]">
-          <Globe size={20} />
-          <span className="font-medium">Withdraw</span>
-          <span className="text-xs text-blue-600 ml-auto">(coming soon)</span>
-        </div>
       </nav>
     </aside>
   );

@@ -2,7 +2,7 @@
 import TotalBalanceCard from "@/components/TotalBalanceCard";
 import AssetBreakdownTable from "@/components/AssetBreakdownTable";
 import TransactionsOverview from "@/components/TransactionsOverview";
-import { useNexus } from '@avail-project/nexus-widgets';
+import { EthereumProvider, useNexus } from '@avail-project/nexus-widgets';
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 
@@ -17,7 +17,7 @@ export default function Home() {
   useEffect(() => {
     if (isConnected && connector?.getProvider && !isSdkInitialized) {
       connector.getProvider().then(async (provider) => {
-        await initializeSdk(provider as any);
+        await initializeSdk(provider as EthereumProvider);
       });
     }
   }, [isConnected, connector, isSdkInitialized]);
@@ -56,7 +56,7 @@ export default function Home() {
           onClick={() => {
             if (isConnected && connector?.getProvider && !isSdkInitialized) {
               connector.getProvider().then(async (provider) => {
-                await initializeSdk(provider as any);
+                await initializeSdk(provider as EthereumProvider);
               });
             }
           }} 

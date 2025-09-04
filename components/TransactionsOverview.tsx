@@ -1,8 +1,8 @@
 'use client';
 
-import { useAlchemyTransfers } from '@/hooks/useAlchemy';
+import { useAlchemyTransfers, Transfer } from '@/hooks/useAlchemy';
 import { useAccount } from 'wagmi';
-import { ArrowDownLeft, ArrowUpRight, ExternalLink } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight } from 'lucide-react';
 
 export default function TransactionsOverview() {
   const { address, isConnected } = useAccount();
@@ -15,11 +15,11 @@ export default function TransactionsOverview() {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const formatAmount = (value: number, asset: string) => {
-    return `${value} ${asset}`;
+  const formatAmount = (value: number | null, asset: string | null) => {
+    return `${value || 0} ${asset || 'Unknown'}`;
   };
 
-  const formatTimestamp = (transfer: any) => {
+  const formatTimestamp = (transfer: Transfer) => {
     // Use the actual timestamp from the API
     const timestamp = transfer.timestamp || Date.now();
     const now = Date.now();
@@ -100,7 +100,7 @@ export default function TransactionsOverview() {
                       {formatAmount(tx.value, tx.asset)}
                     </td>
                     <td className="py-3 px-2 text-sm text-[#2E2E2E]" style={{ padding: '1% 2%' }}>
-                      {tx.network}
+                      {tx.network || 'Unknown'}
                     </td>
                     <td className="py-3 px-2 text-sm text-[#2E2E2E]" style={{ padding: '1% 2%' }}>
                       {formatTimestamp(tx)}

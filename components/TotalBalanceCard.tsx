@@ -1,17 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { Snowflake, QrCode, Send, Copy, Check } from 'lucide-react';
+import { QrCode, Send, Copy, Check } from 'lucide-react';
 import { useUnifiedBalance } from '@/hooks/useUnifiedBalance';
 import {
   BridgeButton,
   TransferButton,
-  BridgeAndExecuteButton,
-  TOKEN_CONTRACT_ADDRESSES, TOKEN_METADATA, SUPPORTED_CHAINS
 } from '@avail-project/nexus-widgets';
 import { Button } from './ui/button';
-import { parseUnits } from 'viem';
-import ConsolidateButton from './ConsolidateButton';
 import { useAccount } from 'wagmi';
 import { useState } from 'react';
 import QRCode from 'react-qr-code';

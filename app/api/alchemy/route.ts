@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Alchemy, AssetTransfersCategory, Network } from 'alchemy-sdk';
+import { Alchemy, AssetTransfersCategory, Network, AssetTransfersResponse } from 'alchemy-sdk';
 
 const NETWORKS = [
   { name: 'Ethereum', network: Network.ETH_MAINNET },
@@ -8,6 +8,7 @@ const NETWORKS = [
   { name: 'Polygon', network: Network.MATIC_MAINNET },
   { name: 'Arbitrum', network: Network.ARB_MAINNET },
 ];
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
           }
 
           // Filter for USDC transfers only
-          const usdcTransfers = (data.result?.transfers || []).filter((transfer: any) => {
+          const usdcTransfers = (data.result?.transfers || []).filter((transfer: AssetTransfersResponse['transfers'][number]) => {
             return transfer.asset === 'USDC';
           });
 
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
 
           // Get block timestamps for each USDC transfer
           const transfersWithTimestamps = await Promise.all(
-            usdcTransfers.map(async (transfer: any) => {
+            usdcTransfers.map(async (transfer: AssetTransfersResponse['transfers'][number]) => {
               try {
                 // Get block timestamp
                 const blockResponse = await fetch(`https://${networkUrl}-mainnet.g.alchemy.com/v2/${apiKey}`, {
