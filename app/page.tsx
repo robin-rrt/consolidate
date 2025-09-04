@@ -10,7 +10,7 @@ import { useAccount } from 'wagmi';
 
 export default function Home() {
 
-  const { initializeSdk, sdk, isSdkInitialized } = useNexus();
+  const { initializeSdk, sdk, isSdkInitialized, deinitializeSdk } = useNexus();
   const { connector, isConnected } = useAccount();
   const { setProvider } = useNexus();
 
@@ -19,6 +19,9 @@ export default function Home() {
       connector.getProvider().then(async (provider) => {
         await initializeSdk(provider as EthereumProvider);
       });
+    }
+    if (!isConnected && isSdkInitialized) {
+      deinitializeSdk();
     }
   }, [isConnected, connector, isSdkInitialized]);
 
